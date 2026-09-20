@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Docklet (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "Docklet (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

@@ -1,0 +1,514 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="Docklet.Pages.Container.ContainerDetailPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:Docklet.Pages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    KeyboardAcceleratorPlacementMode="Hidden"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <local:ContainerStatusConverter x:Key="ContainerStatusConverter" />
+    </Page.Resources>
+
+    <Page.KeyboardAccelerators>
+        <KeyboardAccelerator Key="F" Modifiers="Control" Invoked="LogsFindAccelerator_Invoked" />
+    </Page.KeyboardAccelerators>
+
+    <Grid Padding="24" RowSpacing="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid ColumnSpacing="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock
+                x:Name="ParentCrumb"
+                x:Uid="Containers_Title"
+                VerticalAlignment="Center"
+                Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                IsTapEnabled="True"
+                PointerEntered="ParentCrumb_PointerEntered"
+                PointerExited="ParentCrumb_PointerExited"
+                Style="{ThemeResource TitleTextBlockStyle}"
+                Tapped="ParentCrumb_Tapped" />
+            <FontIcon
+                Grid.Column="1"
+                VerticalAlignment="Center"
+                FontSize="14"
+                Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                Glyph="&#xE76C;" />
+            <TextBlock
+                x:Name="TitleText"
+                Grid.Column="2"
+                VerticalAlignment="Center"
+                Style="{ThemeResource TitleTextBlockStyle}"
+                TextTrimming="CharacterEllipsis" />
+            <Button
+                x:Name="DetailRefreshButton"
+                Grid.Column="3"
+                VerticalAlignment="Center"
+                Click="DetailRefreshButton_Click">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <FontIcon FontSize="14" Glyph="&#xE72C;" />
+                    <TextBlock
+                        x:Name="DetailRefreshText"
+                        VerticalAlignment="Center" />
+                </StackPanel>
+            </Button>
+        </Grid>
+        <SelectorBar
+            x:Name="DetailSelector"
+            Grid.Row="1">
+            <SelectorBarItem
+                x:Name="OverviewItem"
+                x:Uid="ContainerDetail_TabOverview" />
+            <SelectorBarItem
+                x:Name="EnvItem"
+                x:Uid="ContainerDetail_TabEnv" />
+            <SelectorBarItem
+                x:Name="LogsItem"
+                x:Uid="ContainerDetail_TabLogs" />
+        </SelectorBar>
+        <Grid Grid.Row="2">
+            <Grid
+                x:Name="OverviewPanel"
+                RowSpacing="8">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <InfoBar
+                    x:Name="OverviewInfoBar"
+                    IsClosable="True"
+                    IsOpen="False" />
+                <ScrollViewer Grid.Row="1">
+                    <StackPanel Padding="0,0,16,0" Spacing="24">
+                        <StackPanel Spacing="8">
+                            <TextBlock
+                                x:Uid="ContainerDetail_BasicInfoTitle"
+                                Style="{ThemeResource BodyStrongTextBlockStyle}" />
+                            <Border
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Top"
+                                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                BorderThickness="1"
+                                CornerRadius="{ThemeResource OverlayCornerRadius}">
+                                <Grid ColumnSpacing="48">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <TextBlock
+                                        x:Uid="ContainerDetail_Id"
+                                        Padding="20,16,0,16"
+                                        VerticalAlignment="Center"
+                                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                        Style="{ThemeResource BodyStrongTextBlockStyle}" />
+                                    <TextBlock
+                                        x:Name="OverviewIdText"
+                                        Grid.Column="1"
+                                        Padding="0,16,20,16"
+                                        FontFamily="{StaticResource MonospaceFontFamily}"
+                                        IsTextSelectionEnabled="True"
+                                        Style="{ThemeResource BodyTextBlockStyle}"
+                                        TextWrapping="Wrap" />
+                                    <Rectangle
+                                        Grid.Row="1"
+                                        Grid.ColumnSpan="2"
+                                        Height="1"
+                                        Fill="{ThemeResource DividerStrokeColorDefaultBrush}" />
+                                    <TextBlock
+                                        x:Uid="Containers_Name"
+                                        Grid.Row="2"
+                                        Padding="20,16,0,16"
+                                        VerticalAlignment="Center"
+                                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                        Style="{ThemeResource BodyStrongTextBlockStyle}" />
+                                    <TextBlock
+                                        x:Name="OverviewNameText"
+                                        Grid.Row="2"
+                                        Grid.Column="1"
+                                        Padding="0,16,20,16"
+                                        FontFamily="{StaticResource MonospaceFontFamily}"
+                                        IsTextSelectionEnabled="True"
+                                        Style="{ThemeResource BodyTextBlockStyle}"
+                                        TextTrimming="CharacterEllipsis" />
+                                    <Rectangle
+                                        Grid.Row="3"
+                                        Grid.ColumnSpan="2"
+                                        Height="1"
+                                        Fill="{ThemeResource DividerStrokeColorDefaultBrush}" />
+                                    <TextBlock
+                                        x:Uid="Containers_Status"
+                                        Grid.Row="4"
+                                        Padding="20,16,0,16"
+                                        VerticalAlignment="Center"
+                                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                        Style="{ThemeResource BodyStrongTextBlockStyle}" />
+                                    <StackPanel
+                                        Grid.Row="4"
+                                        Grid.Column="1"
+                                        Padding="0,16,20,16"
+                                        VerticalAlignment="Center"
+                                        Orientation="Horizontal"
+                                        Spacing="12">
+                                        <Border
+                                            x:Name="OverviewStatusBadge"
+                                            MinWidth="88"
+                                            Padding="10,4"
+                                            VerticalAlignment="Center"
+                                            CornerRadius="{ThemeResource ControlCornerRadius}">
+                                            <TextBlock
+                                                x:Name="OverviewStatusText"
+                                                HorizontalAlignment="Center"
+                                                Style="{ThemeResource BodyStrongTextBlockStyle}" />
+                                        </Border>
+                                        <TextBlock
+                                            x:Name="OverviewStatusDetailText"
+                                            VerticalAlignment="Center"
+                                            FontFamily="{StaticResource MonospaceFontFamily}"
+                                            IsTextSelectionEnabled="True"
+                                            Style="{ThemeResource BodyTextBlockStyle}"
+                                            TextWrapping="Wrap" />
+                                    </StackPanel>
+                                    <Rectangle
+                                        Grid.Row="5"
+                                        Grid.ColumnSpan="2"
+                                        Height="1"
+                                        Fill="{ThemeResource DividerStrokeColorDefaultBrush}" />
+                                    <TextBlock
+                                        x:Uid="ContainerDetail_Created"
+                                        Grid.Row="6"
+                                        Padding="20,16,0,16"
+                                        VerticalAlignment="Center"
+                                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                        Style="{ThemeResource BodyStrongTextBlockStyle}" />
+                                    <TextBlock
+                                        x:Name="OverviewCreatedText"
+                                        Grid.Row="6"
+                                        Grid.Column="1"
+                                        Padding="0,16,20,16"
+                                        FontFamily="{StaticResource MonospaceFontFamily}"
+                                        IsTextSelectionEnabled="True"
+                                        Style="{ThemeResource BodyTextBlockStyle}" />
+                                    <Rectangle
+                                        Grid.Row="7"
+                                        Grid.ColumnSpan="2"
+                                        Height="1"
+                                        Fill="{ThemeResource DividerStrokeColorDefaultBrush}" />
+                                    <TextBlock
+                                        x:Uid="ContainerDetail_Started"
+                                        Grid.Row="8"
+                                        Padding="20,16,0,16"
+                                        VerticalAlignment="Center"
+                                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                        Style="{ThemeResource BodyStrongTextBlockStyle}" />
+                                    <TextBlock
+                                        x:Name="OverviewStartedText"
+                                        Grid.Row="8"
+                                        Grid.Column="1"
+                                        Padding="0,16,20,16"
+                                        FontFamily="{StaticResource MonospaceFontFamily}"
+                                        IsTextSelectionEnabled="True"
+                                        Style="{ThemeResource BodyTextBlockStyle}" />
+                                </Grid>
+                            </Border>
+                        </StackPanel>
+                        <StackPanel Spacing="8">
+                            <TextBlock
+                                x:Uid="ContainerDetail_PortsTitle"
+                                Style="{ThemeResource BodyStrongTextBlockStyle}" />
+                            <Grid>
+                                <TextBlock
+                                    x:Name="PortsEmptyText"
+                                    x:Uid="ContainerDetail_PortsEmpty"
+                                    HorizontalAlignment="Left"
+                                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                    Visibility="Collapsed" />
+                                <Border
+                                    x:Name="PortsListView"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Top"
+                                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                    BorderThickness="1"
+                                    CornerRadius="{ThemeResource OverlayCornerRadius}"
+                                    Visibility="Collapsed">
+                                    <ItemsRepeater x:Name="PortsList">
+                                        <ItemsRepeater.Layout>
+                                            <StackLayout />
+                                        </ItemsRepeater.Layout>
+                                        <ItemsRepeater.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="Auto" />
+                                                        <RowDefinition Height="Auto" />
+                                                    </Grid.RowDefinitions>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="220" />
+                                                        <ColumnDefinition Width="*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock
+                                                        Padding="20,16,0,16"
+                                                        VerticalAlignment="Top"
+                                                        FontFamily="{StaticResource MonospaceFontFamily}"
+                                                        IsTextSelectionEnabled="True"
+                                                        Style="{ThemeResource BodyTextBlockStyle}"
+                                                        Text="{Binding ContainerPort}"
+                                                        TextWrapping="Wrap" />
+                                                    <TextBlock
+                                                        Grid.Column="1"
+                                                        Padding="0,16,20,16"
+                                                        FontFamily="{StaticResource MonospaceFontFamily}"
+                                                        IsTextSelectionEnabled="True"
+                                                        Style="{ThemeResource BodyTextBlockStyle}"
+                                                        Text="{Binding HostBinding}"
+                                                        TextWrapping="Wrap" />
+                                                    <Rectangle
+                                                        Grid.Row="1"
+                                                        Grid.ColumnSpan="2"
+                                                        Height="1"
+                                                        Fill="{ThemeResource DividerStrokeColorDefaultBrush}"
+                                                        Visibility="{Binding DividerVisibility}" />
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ItemsRepeater.ItemTemplate>
+                                    </ItemsRepeater>
+                                </Border>
+                            </Grid>
+                        </StackPanel>
+                        <StackPanel Spacing="8">
+                            <TextBlock
+                                x:Uid="ContainerDetail_MountsTitle"
+                                Style="{ThemeResource BodyStrongTextBlockStyle}" />
+                            <Grid>
+                                <TextBlock
+                                    x:Name="MountsEmptyText"
+                                    x:Uid="ContainerDetail_MountsEmpty"
+                                    HorizontalAlignment="Left"
+                                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                    Visibility="Collapsed" />
+                                <Border
+                                    x:Name="MountsListView"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Top"
+                                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                    BorderThickness="1"
+                                    CornerRadius="{ThemeResource OverlayCornerRadius}"
+                                    Visibility="Collapsed">
+                                    <ItemsRepeater x:Name="MountsList">
+                                        <ItemsRepeater.Layout>
+                                            <StackLayout />
+                                        </ItemsRepeater.Layout>
+                                        <ItemsRepeater.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="Auto" />
+                                                        <RowDefinition Height="Auto" />
+                                                    </Grid.RowDefinitions>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="Auto" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock
+                                                        Padding="20,16,0,16"
+                                                        VerticalAlignment="Top"
+                                                        FontFamily="{StaticResource MonospaceFontFamily}"
+                                                        IsTextSelectionEnabled="True"
+                                                        Style="{ThemeResource BodyTextBlockStyle}"
+                                                        Text="{Binding Source}"
+                                                        TextWrapping="Wrap" />
+                                                    <TextBlock
+                                                        Grid.Column="1"
+                                                        Padding="12,16,0,16"
+                                                        FontFamily="{StaticResource MonospaceFontFamily}"
+                                                        IsTextSelectionEnabled="True"
+                                                        Style="{ThemeResource BodyTextBlockStyle}"
+                                                        Text="{Binding Destination}"
+                                                        TextWrapping="Wrap" />
+                                                    <TextBlock
+                                                        Grid.Column="2"
+                                                        Padding="0,16,20,16"
+                                                        VerticalAlignment="Top"
+                                                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                                        Style="{ThemeResource BodyTextBlockStyle}"
+                                                        Text="{Binding Mode}" />
+                                                    <Rectangle
+                                                        Grid.Row="1"
+                                                        Grid.ColumnSpan="3"
+                                                        Height="1"
+                                                        Fill="{ThemeResource DividerStrokeColorDefaultBrush}"
+                                                        Visibility="{Binding DividerVisibility}" />
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ItemsRepeater.ItemTemplate>
+                                    </ItemsRepeater>
+                                </Border>
+                            </Grid>
+                        </StackPanel>
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
+            <Grid
+                x:Name="EnvPanel"
+                RowSpacing="8"
+                Visibility="Collapsed">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <InfoBar
+                    x:Name="EnvInfoBar"
+                    IsClosable="True"
+                    IsOpen="False" />
+                <Grid Grid.Row="1">
+                    <TextBlock
+                        x:Name="EnvEmptyText"
+                        x:Uid="ContainerDetail_EnvEmpty"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                        Visibility="Collapsed" />
+                    <ScrollViewer x:Name="EnvListView" Visibility="Collapsed">
+                        <Border
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Top"
+                            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                            BorderThickness="1"
+                            CornerRadius="{ThemeResource OverlayCornerRadius}">
+                            <ItemsRepeater x:Name="EnvList">
+                                <ItemsRepeater.Layout>
+                                    <StackLayout />
+                                </ItemsRepeater.Layout>
+                                <ItemsRepeater.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="220" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock
+                                                Padding="20,16,0,16"
+                                                VerticalAlignment="Top"
+                                                FontFamily="{StaticResource MonospaceFontFamily}"
+                                                Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                                IsTextSelectionEnabled="True"
+                                                Style="{ThemeResource BodyTextBlockStyle}"
+                                                Text="{Binding Name}"
+                                                TextWrapping="Wrap" />
+                                            <TextBlock
+                                                Grid.Column="1"
+                                                Padding="0,16,20,16"
+                                                FontFamily="{StaticResource MonospaceFontFamily}"
+                                                IsTextSelectionEnabled="True"
+                                                Style="{ThemeResource BodyTextBlockStyle}"
+                                                Text="{Binding Value}"
+                                                TextWrapping="Wrap" />
+                                            <Rectangle
+                                                Grid.Row="1"
+                                                Grid.ColumnSpan="2"
+                                                Height="1"
+                                                Fill="{ThemeResource DividerStrokeColorDefaultBrush}"
+                                                Visibility="{Binding DividerVisibility}" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </ItemsRepeater.ItemTemplate>
+                            </ItemsRepeater>
+                        </Border>
+                    </ScrollViewer>
+                </Grid>
+            </Grid>
+            <Grid
+                x:Name="LogsPanel"
+                RowSpacing="8"
+                Visibility="Collapsed">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <InfoBar
+                    x:Name="LogsInfoBar"
+                    IsClosable="True"
+                    IsOpen="False" />
+                <AutoSuggestBox
+                    x:Name="LogsSearchBox"
+                    Grid.Row="1"
+                    Width="280"
+                    HorizontalAlignment="Left"
+                    x:Uid="ContainerDetail_LogsSearchBox"
+                    QueryIcon="Find"
+                    QuerySubmitted="LogsSearchBox_QuerySubmitted"
+                    TextChanged="LogsSearchBox_TextChanged" />
+                <Border
+                    Grid.Row="2"
+                    Background="{ThemeResource SolidBackgroundFillColorBaseBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1"
+                    CornerRadius="{ThemeResource ControlCornerRadius}">
+                    <Grid>
+                        <ProgressRing
+                            x:Name="LogsProgress"
+                            Width="32"
+                            Height="32"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            IsActive="False"
+                            Visibility="Collapsed" />
+                        <TextBlock
+                            x:Name="LogsEmptyText"
+                            x:Uid="ContainerDetail_LogsEmpty"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                            Visibility="Collapsed" />
+                        <ScrollViewer
+                            x:Name="LogsView"
+                            HorizontalScrollBarVisibility="Auto"
+                            VerticalScrollBarVisibility="Auto"
+                            Visibility="Collapsed">
+                            <TextBlock
+                                x:Name="LogsText"
+                                Padding="12"
+                                FontFamily="{StaticResource MonospaceFontFamily}"
+                                FontSize="12"
+                                Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                                IsTextSelectionEnabled="True"
+                                TextWrapping="NoWrap" />
+                        </ScrollViewer>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Grid>
+    </Grid>
+</Page>

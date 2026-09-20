@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <data name="Nav_Home.Content" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Nav_Containers.Content" xml:space="preserve">
+    <value>Containers</value>
+  </data>
+  <data name="Nav_Images.Content" xml:space="preserve">
+    <value>Images</value>
+  </data>
+  <data name="Nav_Volumes.Content" xml:space="preserve">
+    <value>Volumes</value>
+  </data>
+  <data name="Nav_Networks.Content" xml:space="preserve">
+    <value>Networks</value>
+  </data>
+  <data name="Nav_Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="Home_Title.Text" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Home_RunningContainers.Text" xml:space="preserve">
+    <value>Running containers</value>
+  </data>
+  <data name="Home_Refresh.Content" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="Home_DockerErrorTitle" xml:space="preserve">
+    <value>Cannot connect to Docker</value>
+  </data>
+  <data name="Home_Images.Text" xml:space="preserve">
+    <value>Images</value>
+  </data>
+  <data name="Home_Volumes.Text" xml:space="preserve">
+    <value>Volumes</value>
+  </data>
+  <data name="Home_Networks.Text" xml:space="preserve">
+    <value>Networks</value>
+  </data>
+  <data name="Containers_Title.Text" xml:space="preserve">
+    <value>Containers</value>
+  </data>
+  <data name="Containers_Refresh.Content" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="Containers_Name.Text" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Containers_Status.Text" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Containers_Empty.Text" xml:space="preserve">
+    <value>No containers.</value>
+  </data>
+  <data name="Containers_Start.Text" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="Containers_Stop.Text" xml:space="preserve">
+    <value>Stop</value>
+  </data>
+  <data name="Containers_Logs.Text" xml:space="preserve">
+    <value>Logs</value>
+  </data>
+  <data name="Containers_Terminal.Text" xml:space="preserve">
+    <value>Terminal</value>
+  </data>
+  <data name="Containers_TerminalErrorTitle" xml:space="preserve">
+    <value>Cannot open terminal</value>
+  </data>
+  <data name="Containers_StartErrorTitle" xml:space="preserve">
+    <value>Cannot start container</value>
+  </data>
+  <data name="Containers_StopErrorTitle" xml:space="preserve">
+    <value>Cannot stop container</value>
+  </data>
+  <data name="ContainerDetail_Placeholder.Text" xml:space="preserve">
+    <value>The details page is a placeholder.</value>
+  </data>
+  <data name="ContainerDetail_TabOverview.Text" xml:space="preserve">
+    <value>Overview</value>
+  </data>
+  <data name="ContainerDetail_BasicInfoTitle.Text" xml:space="preserve">
+    <value>Basic info</value>
+  </data>
+  <data name="ContainerDetail_TabLogs.Text" xml:space="preserve">
+    <value>Logs</value>
+  </data>
+  <data name="ContainerDetail_TabEnv.Text" xml:space="preserve">
+    <value>Environment</value>
+  </data>
+  <data name="ContainerDetail_EnvEmpty.Text" xml:space="preserve">
+    <value>No environment variables.</value>
+  </data>
+  <data name="ContainerDetail_PortsTitle.Text" xml:space="preserve">
+    <value>Ports</value>
+  </data>
+  <data name="ContainerDetail_PortsEmpty.Text" xml:space="preserve">
+    <value>No published ports.</value>
+  </data>
+  <data name="ContainerDetail_MountsTitle.Text" xml:space="preserve">
+    <value>Mounts</value>
+  </data>
+  <data name="ContainerDetail_MountsEmpty.Text" xml:space="preserve">
+    <value>No mounts.</value>
+  </data>
+  <data name="ContainerDetail_LogsEmpty.Text" xml:space="preserve">
+    <value>No logs.</value>
+  </data>
+  <data name="ContainerDetail_LogsSearchBox.PlaceholderText" xml:space="preserve">
+    <value>Search logs</value>
+  </data>
+  <data name="ContainerDetail_LogsErrorTitle" xml:space="preserve">
+    <value>Cannot load logs</value>
+  </data>
+  <data name="ContainerDetail_Id.Text" xml:space="preserve">
+    <value>ID</value>
+  </data>
+  <data name="ContainerDetail_Created.Text" xml:space="preserve">
+    <value>Created</value>
+  </data>
+  <data name="ContainerDetail_Started.Text" xml:space="preserve">
+    <value>Started</value>
+  </data>
+  <data name="ContainerDetail_NotAvailable" xml:space="preserve">
+    <value>—</value>
+  </data>
+  <data name="ContainerDetail_InspectErrorTitle" xml:space="preserve">
+    <value>Cannot load details</value>
+  </data>
+  <data name="ContainerStatus_Unknown" xml:space="preserve">
+    <value>Unknown</value>
+  </data>
+  <data name="ContainerStatus_Created" xml:space="preserve">
+    <value>Created</value>
+  </data>
+  <data name="ContainerStatus_Running" xml:space="preserve">
+    <value>Running</value>
+  </data>
+  <data name="ContainerStatus_Paused" xml:space="preserve">
+    <value>Paused</value>
+  </data>
+  <data name="ContainerStatus_Restarting" xml:space="preserve">
+    <value>Restarting</value>
+  </data>
+  <data name="ContainerStatus_Removing" xml:space="preserve">
+    <value>Removing</value>
+  </data>
+  <data name="ContainerStatus_Exited" xml:space="preserve">
+    <value>Exited</value>
+  </data>
+  <data name="ContainerStatus_Dead" xml:space="preserve">
+    <value>Dead</value>
+  </data>
+  <data name="Volumes_Title.Text" xml:space="preserve">
+    <value>Volumes</value>
+  </data>
+  <data name="Volumes_Refresh.Content" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="Volumes_Empty.Text" xml:space="preserve">
+    <value>No volumes.</value>
+  </data>
+  <data name="Volumes_Remove.Text" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="Volumes_RemoveErrorTitle" xml:space="preserve">
+    <value>Cannot remove volume</value>
+  </data>
+  <data name="Volumes_RemoveConfirmTitle" xml:space="preserve">
+    <value>Remove volume?</value>
+  </data>
+  <data name="Volumes_RemoveConfirmMessage" xml:space="preserve">
+    <value>This permanently deletes the volume "{0}" and its data.</value>
+  </data>
+  <data name="Volumes_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Networks_Title.Text" xml:space="preserve">
+    <value>Networks</value>
+  </data>
+  <data name="Networks_Refresh.Content" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="Networks_Empty.Text" xml:space="preserve">
+    <value>No networks.</value>
+  </data>
+  <data name="Networks_Remove.Text" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="Networks_RemoveErrorTitle" xml:space="preserve">
+    <value>Cannot remove network</value>
+  </data>
+  <data name="Networks_RemoveConfirmTitle" xml:space="preserve">
+    <value>Remove network?</value>
+  </data>
+  <data name="Networks_RemoveConfirmMessage" xml:space="preserve">
+    <value>This removes the network "{0}".</value>
+  </data>
+  <data name="Networks_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Images_Title.Text" xml:space="preserve">
+    <value>Images</value>
+  </data>
+  <data name="Images_Refresh.Content" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="Images_Empty.Text" xml:space="preserve">
+    <value>No images.</value>
+  </data>
+  <data name="Images_Remove.Text" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="Images_InUse" xml:space="preserve">
+    <value>In use by {0} container(s)</value>
+  </data>
+  <data name="Images_RemoveErrorTitle" xml:space="preserve">
+    <value>Cannot remove image</value>
+  </data>
+  <data name="Images_RemoveConfirmTitle" xml:space="preserve">
+    <value>Remove image?</value>
+  </data>
+  <data name="Images_RemoveConfirmMessage" xml:space="preserve">
+    <value>This removes the image "{0}".</value>
+  </data>
+  <data name="Images_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Settings_Title.Text" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="Settings_Description.Text" xml:space="preserve">
+    <value>Change the display language.</value>
+  </data>
+  <data name="Settings_Language.Header" xml:space="preserve">
+    <value>Language</value>
+  </data>
+</root>

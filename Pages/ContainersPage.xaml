@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="Docklet.Pages.ContainersPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:Docklet.Pages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <local:ContainerStatusConverter x:Key="ContainerStatusConverter" />
+    </Page.Resources>
+
+    <Grid Padding="24" RowSpacing="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock
+                x:Uid="Containers_Title"
+                VerticalAlignment="Center"
+                Style="{ThemeResource TitleTextBlockStyle}" />
+            <Button
+                x:Name="RefreshButton"
+                Grid.Column="1"
+                VerticalAlignment="Center"
+                Click="RefreshButton_Click">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <FontIcon FontSize="14" Glyph="&#xE72C;" />
+                    <TextBlock
+                        x:Name="RefreshButtonText"
+                        VerticalAlignment="Center" />
+                </StackPanel>
+            </Button>
+        </Grid>
+
+        <InfoBar
+            x:Name="StatusInfoBar"
+            Grid.Row="1"
+            IsClosable="True"
+            IsOpen="False" />
+
+        <Grid Grid.Row="2">
+            <ProgressRing
+                x:Name="ListProgress"
+                Width="32"
+                Height="32"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                IsActive="True" />
+            <TextBlock
+                x:Name="EmptyText"
+                x:Uid="Containers_Empty"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                Visibility="Collapsed" />
+            <ScrollViewer
+                x:Name="ContainerListView"
+                Visibility="Collapsed">
+                <ItemsRepeater x:Name="ContainerList">
+                    <ItemsRepeater.Layout>
+                        <StackLayout Spacing="8" />
+                    </ItemsRepeater.Layout>
+                    <ItemsRepeater.ItemTemplate>
+                        <DataTemplate>
+                            <Border
+                                Padding="16,12"
+                                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                BorderThickness="1"
+                                CornerRadius="{ThemeResource OverlayCornerRadius}"
+                                Tag="{Binding}"
+                                Tapped="ContainerCard_Tapped">
+                                <Grid ColumnSpacing="12">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" MaxWidth="280" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock
+                                        VerticalAlignment="Center"
+                                        Style="{ThemeResource BodyStrongTextBlockStyle}"
+                                        Text="{Binding Name}"
+                                        TextTrimming="CharacterEllipsis"
+                                        TextWrapping="NoWrap" />
+                                    <Border
+                                        Grid.Column="1"
+                                        MinWidth="88"
+                                        Padding="10,4"
+                                        VerticalAlignment="Center"
+                                        Background="{Binding Status, Converter={StaticResource ContainerStatusConverter}, ConverterParameter=Background}"
+                                        CornerRadius="{ThemeResource ControlCornerRadius}">
+                                        <TextBlock
+                                            HorizontalAlignment="Center"
+                                            Style="{ThemeResource BodyStrongTextBlockStyle}"
+                                            Foreground="{Binding Status, Converter={StaticResource ContainerStatusConverter}, ConverterParameter=Foreground}"
+                                            Text="{Binding Status, Converter={StaticResource ContainerStatusConverter}}" />
+                                    </Border>
+                                    <StackPanel
+                                        Grid.Column="3"
+                                        VerticalAlignment="Center"
+                                        Orientation="Horizontal"
+                                        Spacing="8">
+                                        <Button
+                                            Click="StartButton_Click"
+                                            IsEnabled="{Binding CanStart}"
+                                            Tag="{Binding}">
+                                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                                <FontIcon FontSize="14" Glyph="&#xF5B0;" />
+                                                <TextBlock
+                                                    x:Uid="Containers_Start"
+                                                    VerticalAlignment="Center" />
+                                            </StackPanel>
+                                        </Button>
+                                        <Button
+                                            Click="StopButton_Click"
+                                            IsEnabled="{Binding CanStop}"
+                                            Tag="{Binding}">
+                                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                                <FontIcon FontSize="14" Glyph="&#xEE95;" />
+                                                <TextBlock
+                                                    x:Uid="Containers_Stop"
+                                                    VerticalAlignment="Center" />
+                                            </StackPanel>
+                                        </Button>
+                                        <Button
+                                            Click="LogsButton_Click"
+                                            IsEnabled="{Binding CanViewLogs}"
+                                            Tag="{Binding}">
+                                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                                <FontIcon FontSize="14" Glyph="&#xE8A5;" />
+                                                <TextBlock
+                                                    x:Uid="Containers_Logs"
+                                                    VerticalAlignment="Center" />
+                                            </StackPanel>
+                                        </Button>
+                                        <Button
+                                            Click="TerminalButton_Click"
+                                            IsEnabled="{Binding CanOpenTerminal}"
+                                            Tag="{Binding}">
+                                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                                <FontIcon FontSize="14" Glyph="&#xE756;" />
+                                                <TextBlock
+                                                    x:Uid="Containers_Terminal"
+                                                    VerticalAlignment="Center" />
+                                            </StackPanel>
+                                        </Button>
+                                    </StackPanel>
+                                    <FontIcon
+                                        Grid.Column="4"
+                                        VerticalAlignment="Center"
+                                        FontSize="12"
+                                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                        Glyph="&#xE76C;" />
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsRepeater.ItemTemplate>
+                </ItemsRepeater>
+            </ScrollViewer>
+        </Grid>
+    </Grid>
+</Page>

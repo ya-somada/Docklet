@@ -1,0 +1,147 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <Version>0.6.0</Version>
+    <AssemblyVersion>$(Version).0</AssemblyVersion>
+    <FileVersion>$(Version).0</FileVersion>
+    <InformationalVersion>$(Version)</InformationalVersion>
+    <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+    <TargetFramework>net10.0-windows10.0.26100.0</TargetFramework>
+    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+    <RootNamespace>Docklet</RootNamespace>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>Assets\AppIcon.ico</ApplicationIcon>
+    <Platforms>x86;x64;ARM64</Platforms>
+    <RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == ''">win-$([System.Runtime.InteropServices.RuntimeInformation]::ProcessArchitecture.ToString().ToLowerInvariant())</RuntimeIdentifier>
+    <PublishProfile Condition="Exists('Properties\PublishProfiles\win-$(Platform).pubxml')">win-$(Platform).pubxml</PublishProfile>
+    <UseWinUI>true</UseWinUI>
+    <WinUISDKReferences>false</WinUISDKReferences>
+    <EnableMsixTooling>true</EnableMsixTooling>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <DefaultLanguage>ja-JP</DefaultLanguage>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="Assets\SplashScreen.scale-200.png" />
+    <Content Include="Assets\Square150x150Logo.scale-200.png" />
+    <Content Include="Assets\Square44x44Logo.scale-200.png" />
+    <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
+    <Content Include="Assets\Square44x44Logo.targetsize-48_altform-lightunplated.png" />
+    <Content Include="Assets\StoreLogo.png" />
+    <Content Include="Assets\AppIcon.ico" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="Assets\Wide310x150Logo.scale-200.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Manifest Include="$(ApplicationManifest)" />
+    <None Update="README.md;LICENSE;THIRD_PARTY_NOTICES.md" CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <!--
+    Defining the "Msix" ProjectCapability here allows the Single-project MSIX Packaging
+    Tools extension to be activated for this project even if the Windows App SDK Nuget
+    package has not yet been restored.
+  -->
+  <ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
+    <ProjectCapability Include="Msix" />
+  </ItemGroup>
+
+  <!--
+    Microsoft.Windows.SDK.BuildTools.WinApp adds first-class support for
+    `dotnet run` on packaged WinUI apps: it hooks the .NET CLI Run target to
+    register a debug identity via the winapp CLI and launch the app with
+    package identity (AUMID).
+    Set <EnableWinAppRunSupport>false</EnableWinAppRunSupport> in a
+    <PropertyGroup> above to opt out.
+  -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.28000.2705" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="2.4.0" />
+    <PackageReference Include="Microsoft.Windows.SDK.BuildTools.WinApp" Version="0.6.1" />
+  </ItemGroup>
+
+  <!--
+    Defining the "HasPackageAndPublishMenuAddedByProject" property here allows the Solution
+    Explorer "Package and Publish" context menu entry to be enabled for this project even if
+    the Windows App SDK Nuget package has not yet been restored.
+  -->
+  <PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
+    <HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
+  </PropertyGroup>
+
+  <!-- Publish Properties -->
+  <PropertyGroup>
+    <PublishReadyToRun Condition="'$(Configuration)' == 'Debug'">False</PublishReadyToRun>
+    <PublishReadyToRun Condition="'$(Configuration)' != 'Debug'">True</PublishReadyToRun>
+    <PublishTrimmed Condition="'$(Configuration)' == 'Debug'">False</PublishTrimmed>
+    <PublishTrimmed Condition="'$(Configuration)' != 'Debug'">True</PublishTrimmed>
+  </PropertyGroup>
+
+  <!-- ライセンスも通常の publish 対象として同梱する。 -->
+  <Target Name="IncludeThirdPartyNotices" BeforeTargets="GetCopyToPublishDirectoryItems">
+    <Exec Command="go env GOROOT" ConsoleToMSBuild="true" StandardOutputImportance="Low">
+      <Output TaskParameter="ConsoleOutput" PropertyName="DockletGoRoot" />
+    </Exec>
+    <ItemGroup>
+      <_NuGetNotice Include="$(NuGetPackageRoot)**\LICENSE*;$(NuGetPackageRoot)**\*NOTICE*;
+                                      $(NuGetPackageRoot)**\COPYING*;$(NuGetPackageRoot)**\COPYRIGHT*;
+                                      $(NuGetPackageRoot)**\PATENTS*;$(NuGetPackageRoot)**\AUTHORS*;
+                                      $(NuGetPackageRoot)**\sdk_license*"
+                    Condition="'$(NuGetPackageRoot)' != ''" KeepDuplicates="false" />
+      <ContentWithTargetPath Include="@(_NuGetNotice)"
+                             TargetPath="licenses\NuGet\%(_NuGetNotice.RecursiveDir)%(_NuGetNotice.Filename)%(_NuGetNotice.Extension)"
+                             CopyToPublishDirectory="PreserveNewest" />
+      <ContentWithTargetPath Include="$(DockletGoRoot)\LICENSE">
+        <TargetPath>licenses\Go\LICENSE</TargetPath>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </ContentWithTargetPath>
+      <_GoNotice Include="$(DockletGoRoot)\src\vendor\**\LICENSE*;$(DockletGoRoot)\src\vendor\**\*NOTICE*;
+                                      $(DockletGoRoot)\src\vendor\**\COPYING*;$(DockletGoRoot)\src\vendor\**\COPYRIGHT*;
+                                      $(DockletGoRoot)\src\vendor\**\PATENTS*;$(DockletGoRoot)\src\vendor\**\AUTHORS*"
+                 KeepDuplicates="false" />
+      <ContentWithTargetPath Include="@(_GoNotice)"
+                             TargetPath="licenses\Go\%(_GoNotice.RecursiveDir)%(_GoNotice.Filename)%(_GoNotice.Extension)"
+                             CopyToPublishDirectory="PreserveNewest" />
+    </ItemGroup>
+  </Target>
+
+  <!--
+    WSL Agent (Go / Linux). Built as a static Linux binary so WSL can run it
+    without a Go runtime. Invoked later via wsl.exe; talks over stdin/stdout.
+  -->
+  <PropertyGroup>
+    <WslAgentProjectDir>$(MSBuildThisFileDirectory)agent\</WslAgentProjectDir>
+    <WslAgentName>docklet-agent</WslAgentName>
+    <WslAgentGoArch>amd64</WslAgentGoArch>
+    <WslAgentGoArch Condition="'$(Platform)' == 'ARM64' or $(RuntimeIdentifier.Contains('arm64'))">arm64</WslAgentGoArch>
+  </PropertyGroup>
+
+  <Target Name="BuildWslAgent" BeforeTargets="BeforeBuild"
+          Inputs="$(WslAgentProjectDir)go.mod;$(WslAgentProjectDir)**\*.go"
+          Outputs="$(IntermediateOutputPath)$(WslAgentName)">
+    <PropertyGroup>
+      <WslAgentOutputFile>$([System.IO.Path]::GetFullPath('$(IntermediateOutputPath)$(WslAgentName)'))</WslAgentOutputFile>
+    </PropertyGroup>
+    <MakeDir Directories="$([System.IO.Path]::GetDirectoryName('$(WslAgentOutputFile)'))" />
+    <Message Importance="high" Text="Building WSL Agent ($(WslAgentGoArch)) -&gt; $(WslAgentOutputFile)" />
+    <Exec Command="set GOOS=linux&amp;&amp; set GOARCH=$(WslAgentGoArch)&amp;&amp; set CGO_ENABLED=0&amp;&amp; go build -trimpath -o &quot;$(WslAgentOutputFile)&quot; ."
+          WorkingDirectory="$(WslAgentProjectDir)"
+          StandardOutputImportance="High" />
+  </Target>
+
+  <Target Name="IncludeWslAgentInOutput"
+          AfterTargets="BuildWslAgent"
+          BeforeTargets="GetCopyToOutputDirectoryItems;AssignTargetPaths">
+    <PropertyGroup>
+      <WslAgentOutputFile Condition="'$(WslAgentOutputFile)' == ''">$([System.IO.Path]::GetFullPath('$(IntermediateOutputPath)$(WslAgentName)'))</WslAgentOutputFile>
+    </PropertyGroup>
+    <ItemGroup Condition="Exists('$(WslAgentOutputFile)')">
+      <ContentWithTargetPath Include="$(WslAgentOutputFile)">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        <TargetPath>agent\$(WslAgentName)</TargetPath>
+      </ContentWithTargetPath>
+    </ItemGroup>
+  </Target>
+</Project>
