@@ -21,7 +21,7 @@ jobs:
     env:
       RID: ${{ matrix.runtime }}
       PLATFORM: ${{ matrix.platform }}
-      NUGET_PACKAGES: ${{ runner.temp }}/nuget
+      NUGET_PACKAGES: ${{ github.workspace }}/../nuget
     defaults:
       run:
         shell: pwsh
