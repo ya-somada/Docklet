@@ -84,10 +84,10 @@
       <Output TaskParameter="ConsoleOutput" PropertyName="DockletGoRoot" />
     </Exec>
     <ItemGroup>
-      <_NuGetNotice Include="$(NuGetPackageRoot)**\LICENSE*;$(NuGetPackageRoot)**\*NOTICE*;
-                                      $(NuGetPackageRoot)**\COPYING*;$(NuGetPackageRoot)**\COPYRIGHT*;
-                                      $(NuGetPackageRoot)**\PATENTS*;$(NuGetPackageRoot)**\AUTHORS*;
-                                      $(NuGetPackageRoot)**\sdk_license*"
+      <_NuGetNotice Include="$(NuGetPackageRoot)\**\LICENSE*;$(NuGetPackageRoot)\**\*NOTICE*;
+                                      $(NuGetPackageRoot)\**\COPYING*;$(NuGetPackageRoot)\**\COPYRIGHT*;
+                                      $(NuGetPackageRoot)\**\PATENTS*;$(NuGetPackageRoot)\**\AUTHORS*;
+                                      $(NuGetPackageRoot)\**\sdk_license*"
                     Condition="'$(NuGetPackageRoot)' != ''" KeepDuplicates="false" />
       <ContentWithTargetPath Include="@(_NuGetNotice)"
                              TargetPath="licenses\NuGet\%(_NuGetNotice.RecursiveDir)%(_NuGetNotice.Filename)%(_NuGetNotice.Extension)"
