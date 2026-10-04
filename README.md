@@ -13,6 +13,7 @@ C# の UI と Go 製の WSL エージェントを、標準入出力の JSON で�
 - 外部ターミナルからのコンテナーへの接続（`bash`、失敗時は `sh`）
 - イメージ・ボリューム・ネットワークの一覧と削除
 - 日本語・英語の表示切り替え
+- 操作先の切り替え（WSL 内の Docker / wslc。設定画面）
 
 開発中のアプリです。ログは直近 1,000 行を取得し、リアルタイム追従は行いません。
 大量のログや多数の検索一致がある場合の応答性は、引き続き改善対象です。
@@ -21,13 +22,13 @@ C# の UI と Go 製の WSL エージェントを、標準入出力の JSON で�
 
 GitHub の Releases から、Windows の CPU に合った ZIP をダウンロードしてください。
 
-- x64: `Docklet-0.6.0-win-x64.zip`
-- ARM64: `Docklet-0.6.0-win-arm64.zip`
+- x64: `Docklet-0.7.0-win-x64.zip`
+- ARM64: `Docklet-0.7.0-win-arm64.zip`
 
 ZIP をすべて展開し、フォルダー内の `Docklet.exe` を起動します。
 .NET・Windows App SDK・WSL エージェントは同梱されます。WSL と Docker は別途必要です。
 EXE だけを取り出さず、同梱の DLL・リソース・`agent` フォルダーを一緒に置いてください。
-表示言語の設定は `%LOCALAPPDATA%\Docklet\language.txt` に保存されます。
+表示言語の設定は `%LOCALAPPDATA%\Docklet\settings.json` に保存されます。
 
 ## 必要な環境
 
@@ -60,6 +61,13 @@ wsl -e docker --host unix:///var/run/docker.sock info
 既定の WSL ユーザーに Docker ソケットへのアクセス権が必要です。
 設定は [Docker の Linux インストール後の手順](https://docs.docker.com/engine/install/linux-postinstall/)を参照してください。
 Docker ソケットへのアクセスは強い権限を伴います。ソケットを誰でも書き込める権限に変更しないでください。
+
+### wslc を使う場合
+
+設定画面の「操作先」で `wslc (WSL コンテナー)` を選ぶと、WSL 内の Docker ではなく
+Windows 側の `wslc.exe` を直接呼び出して操作します（Go エージェントは使いません）。
+`wslc.exe` が PATH 上にあることが必要です。設定は `settings.json` の `Backend`（`Docker` / `Wslc`）に保存されます。
+wslc には Docker と共有されないため、Docker 側のコンテナーやイメージは表示されません。
 
 初回起動時およびエージェントの再起動時に、同梱の実行ファイルを WSL の
 `~/.docklet/docklet-agent` へ配置します。
@@ -105,14 +113,14 @@ ARM64 を対象にする場合は `Platform=ARM64` と `RuntimeIdentifier=win-ar
 
 ## 公開・配布する場合
 
-アプリのバージョンは `Docklet.csproj` の `<Version>0.6.0</Version>` で設定します。
+アプリのバージョンは `Docklet.csproj` の `<Version>0.7.0</Version>` で設定します。
 設定画面と EXE のバージョン情報にも反映されます。
 GitHub にソースと `.github/` を push した後、同じバージョンのタグを push すると、
 GitHub Actions が x64・ARM64 の ZIP と SHA-256 一覧を作り、Release に公開します。
 
 ```powershell
-git tag v0.6.0
-git push origin v0.6.0
+git tag v0.7.0
+git push origin v0.7.0
 ```
 
 次回は `<Version>` を更新してコミットし、対応する新しいタグ（例: `v0.6.1`）を push します。

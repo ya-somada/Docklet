@@ -14,13 +14,26 @@ internal static class WslProcess
     /// <param name="arguments">wsl.exe に渡す引数</param>
     /// <param name="cancellationToken">キャンセル トークン</param>
     /// <returns>終了コードと標準出力・標準エラー</returns>
+    public static Task<(int ExitCode, string Stdout, string Stderr)> RunAsync(
+        IReadOnlyList<string> arguments,
+        CancellationToken cancellationToken = default) =>
+        RunAsync(Path.Combine(Environment.SystemDirectory, "wsl.exe"), arguments, cancellationToken);
+
+    /// <summary>
+    /// 指定した実行ファイルを実行します。wslc.exe など WSL 関連の CLI に使います。
+    /// </summary>
+    /// <param name="fileName">実行ファイル名またはパス</param>
+    /// <param name="arguments">渡す引数</param>
+    /// <param name="cancellationToken">キャンセル トークン</param>
+    /// <returns>終了コードと標準出力・標準エラー</returns>
     public static async Task<(int ExitCode, string Stdout, string Stderr)> RunAsync(
+        string fileName,
         IReadOnlyList<string> arguments,
         CancellationToken cancellationToken = default)
     {
         var startInfo = new ProcessStartInfo
         {
-            FileName = Path.Combine(Environment.SystemDirectory, "wsl.exe"),
+            FileName = fileName,
             RedirectStandardOutput = true,
             RedirectStandardError = true,
             UseShellExecute = false,
@@ -39,12 +52,12 @@ internal static class WslProcess
         {
             if (!process.Start())
             {
-                throw new InvalidOperationException("WSL を起動できませんでした。");
+                throw new InvalidOperationException($"{Path.GetFileName(fileName)} を起動できませんでした。");
             }
         }
         catch (System.ComponentModel.Win32Exception ex)
         {
-            throw new InvalidOperationException("WSL が見つかりません。", ex);
+            throw new InvalidOperationException($"{Path.GetFileName(fileName)} が見つかりません。", ex);
         }
 
         try

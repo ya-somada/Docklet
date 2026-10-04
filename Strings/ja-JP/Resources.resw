@@ -259,9 +259,18 @@
     <value>設定</value>
   </data>
   <data name="Settings_Description.Text" xml:space="preserve">
-    <value>表示言語を切り替えます。</value>
+    <value>表示言語と操作先を切り替えます。</value>
   </data>
   <data name="Settings_Language.Header" xml:space="preserve">
     <value>言語</value>
+  </data>
+  <data name="Settings_Backend.Header" xml:space="preserve">
+    <value>操作先</value>
+  </data>
+  <data name="Settings_Backend_Docker.Content" xml:space="preserve">
+    <value>WSL 内の Docker</value>
+  </data>
+  <data name="Settings_Backend_Wslc.Content" xml:space="preserve">
+    <value>wslc (WSL コンテナー)</value>
   </data>
 </root>

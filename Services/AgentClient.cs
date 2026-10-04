@@ -30,6 +30,12 @@ public sealed class AgentClient : IAsyncDisposable
     /// <param name="cancellationToken">キャンセル トークン</param>
     public async Task StartAsync(CancellationToken cancellationToken = default)
     {
+        if (AppSettings.Backend == ContainerBackend.Wslc)
+        {
+            await WslcBackend.CheckAsync(cancellationToken).ConfigureAwait(false);
+            return;
+        }
+
         await _startGate.WaitAsync(cancellationToken).ConfigureAwait(false);
         try
         {
@@ -67,6 +73,11 @@ public sealed class AgentClient : IAsyncDisposable
     public async Task<JsonElement> InvokeAsync(string method, object? paramsPayload, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(method);
+
+        if (AppSettings.Backend == ContainerBackend.Wslc)
+        {
+            return await WslcBackend.InvokeAsync(method, paramsPayload, cancellationToken).ConfigureAwait(false);
+        }
 
         await _invokeGate.WaitAsync(cancellationToken).ConfigureAwait(false);
         var responseReceived = false;

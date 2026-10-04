@@ -19,6 +19,14 @@
                 <ComboBoxItem Content="日本語" Tag="ja-JP" />
                 <ComboBoxItem Content="English" Tag="en-US" />
             </ComboBox>
+            <ComboBox
+                x:Name="BackendComboBox"
+                x:Uid="Settings_Backend"
+                MinWidth="200"
+                SelectionChanged="BackendComboBox_SelectionChanged">
+                <ComboBoxItem x:Uid="Settings_Backend_Docker" Tag="Docker" />
+                <ComboBoxItem x:Uid="Settings_Backend_Wslc" Tag="Wslc" />
+            </ComboBox>
             <TextBlock x:Name="VersionText" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
         </StackPanel>
     </Grid>
